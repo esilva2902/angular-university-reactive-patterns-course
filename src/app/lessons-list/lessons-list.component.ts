@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import * as _ from 'lodash';
 
-import { Observer, lessonsList$ } from "../event-bus-experiments/app-data";
+import { Observer, store } from "../event-bus-experiments/app-data";
 import { Lesson } from "../shared/model/lesson";
 
 @Component({
@@ -26,22 +26,21 @@ export class LessonsListComponent implements Observer, OnInit {
          * These component is subscribing in ngOnInit() hook method but
          * LessonsCounterComponent component is subscribing in constructor method.
          */
-        lessonsList$.subscribe(this);
+        store.subscribe(this);
     }
 
     next(data: Lesson[]) {
         console.log('Lessons list component received data ..');
-        this.lessons = data.slice(0);
+        this.lessons = data;
     }
 
     toggleLessonViewed(lesson:Lesson) {
         console.log('toggling lesson ...');
-        lesson.completed = !lesson.completed;
+        store.toggleLessonViewed(lesson);
     }
 
     delete(deleted:Lesson) {
-        _.remove(this.lessons,
-            lesson => lesson.id === deleted.id )
+        store.deleteLesson(deleted);
     }
 
 

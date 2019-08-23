@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 
 import { testLessons } from "../shared/model/test-lessons";
 import { Lesson } from "../shared/model/lesson";
-import { initializeLessonsList } from './app-data';
+import { store } from './app-data';
 
 @Component({
     selector: 'event-bus-experiments',
@@ -15,7 +15,7 @@ export class EventBusExperimentsComponent implements OnInit {
 
         console.log('Top level component broadcasted all lessons ...');
 
-        initializeLessonsList(testLessons.slice(0));
+        store.initializeLessonsList(testLessons.slice(0));
 
         setTimeout(() => {
 
@@ -25,6 +25,7 @@ export class EventBusExperimentsComponent implements OnInit {
             };
 
             // TODO:
+            store.addLesson(newLesson);
 
         }, 10000);
 
@@ -32,8 +33,11 @@ export class EventBusExperimentsComponent implements OnInit {
 
     addLesson(lessonText: string) {
         // TODO:
+        store.addLesson({
+            id: Math.random(),
+            description: lessonText
+        });
     }
-
 }
 
 
