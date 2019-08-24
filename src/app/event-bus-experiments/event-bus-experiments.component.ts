@@ -23,9 +23,10 @@ export class EventBusExperimentsComponent implements OnInit {
                 description: 'New lesson arriving from the backend'
             };
 
+            console.log(`After 10 seconds we add a new Lesson...`);
             store.addLesson(newLesson);
 
-        }, 10000);
+        }, 5000);
 
     }
 
