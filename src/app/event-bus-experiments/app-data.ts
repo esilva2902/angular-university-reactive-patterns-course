@@ -6,40 +6,38 @@ import {Lesson} from "../shared/model/lesson";
 
 
 class DataStore {
-
-    private lessons : Lesson[]  = [];
-
-    private lessonsListSubject: Subject<Lesson[]> = new Subject<Lesson[]>();
+    private lessonsListSubject: BehaviorSubject<Lesson[]> = new BehaviorSubject<Lesson[]>([]);
 
     public lessonsList$: Observable<Lesson[]> = this.lessonsListSubject.asObservable();
 
     initializeLessonsList(newList: Lesson[]) {
-        this.lessons = _.cloneDeep(newList);
-        this.broadcast();
+        this.lessonsListSubject.next(_.cloneDeep(newList));
     }
 
     addLesson(newLesson: Lesson) {
-        this.lessons.push(_.cloneDeep(newLesson));
-        this.broadcast();
+        let lessons = this.cloneLessons();
+        lessons.push(_.cloneDeep(newLesson));
+
+        this.lessonsListSubject.next(lessons);
     }
 
     deleteLesson(deleted:Lesson) {
-        _.remove(this.lessons,
-            lesson => lesson.id === deleted.id );
-        this.broadcast();
+        let lessons = this.cloneLessons();
+        _.remove(lessons, lesson => lesson.id === deleted.id );
+        
+        this.lessonsListSubject.next(lessons);
     }
 
     toggleLessonViewed(toggled:Lesson) {
-        const lesson = _.find(this.lessons, lesson => lesson.id === toggled.id);
-
+        let lessons = this.cloneLessons();
+        let lesson = _.find(lessons, lesson => lesson.id === toggled.id);
         lesson.completed = ! lesson.completed;
-        this.broadcast();
 
-
+        this.lessonsListSubject.next(lessons);
     }
 
-    broadcast() {
-        this.lessonsListSubject.next(_.cloneDeep(this.lessons));
+    private cloneLessons(): Lesson[] {
+        return _.cloneDeep(this.lessonsListSubject.getValue());
     }
 }
 
