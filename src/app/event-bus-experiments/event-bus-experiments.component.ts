@@ -14,7 +14,7 @@ export class EventBusExperimentsComponent implements OnInit {
 
         console.log('Top level component broadcasted all lessons ...');
 
-        store.initializeLessonsList(testLessons.slice(0));
+        store.initializeLessonsList(testLessons);
 
         setTimeout(() => {
 
