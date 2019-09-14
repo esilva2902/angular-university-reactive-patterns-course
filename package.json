@@ -1,6 +1,6 @@
 {
   "name": "reactive-patterns-course",
-  "version": "0.0.0",
+  "version": "0.0.0-smart-vs-presentational-components.1",
   "license": "MIT",
   "angular-cli": {},
   "scripts": {

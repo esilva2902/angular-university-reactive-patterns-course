@@ -16,6 +16,7 @@ import { CourseDetailComponent } from './course-detail/course-detail.component';
 import {CoursesService} from "./services/courses.service";
 import {AngularFireDatabaseModule} from "@angular/fire/database";
 import {AngularFireAuthModule} from "@angular/fire/auth";
+import { CoursesListComponent } from './courses-list/courses-list.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import {AngularFireAuthModule} from "@angular/fire/auth";
     LessonsListComponent,
     LessonsCounterComponent,
     HomeComponent,
-    CourseDetailComponent
+    CourseDetailComponent,
+    CoursesListComponent
   ],
   imports: [
     BrowserModule,
