@@ -15,6 +15,8 @@ import {RouterModule} from '@angular/router';
 import {routerConfig} from "./router.config";
 import { CourseDetailComponent } from './course-detail/course-detail.component';
 
+import { CoursesService } from './services/courses.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +35,9 @@ import { CourseDetailComponent } from './course-detail/course-detail.component';
     AngularFireDatabaseModule,
     RouterModule.forRoot(routerConfig),
   ],
-  providers: [],
+  providers: [
+    CoursesService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

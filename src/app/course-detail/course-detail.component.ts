@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {AngularFireDatabase} from '@angular/fire/database';
 import {ActivatedRoute} from '@angular/router';
 import {Course} from "../shared/model/course";
 import {Lesson} from "../shared/model/lesson";
 import * as _ from 'lodash';
 import {map} from 'rxjs/operators';
 
+import { CoursesService } from 'app/services/courses.service';
 
 @Component({
   selector: 'course-detail',
@@ -17,35 +17,24 @@ export class CourseDetailComponent implements OnInit {
   course: Course;
   lessons: Lesson[];
 
-  constructor(private route: ActivatedRoute, private db: AngularFireDatabase) {
-
+  constructor(
+    private route: ActivatedRoute, 
+    private coursesService: CoursesService) {
 
       route.params
           .subscribe( params => {
 
               const courseUrl = params['id'];
 
-              this.db.list('courses', ref => ref.orderByChild('url').equalTo(courseUrl))
-              .snapshotChanges()
-              .pipe(
-                map( data => data[0])
-              )
+              this.coursesService.findCourseByUrl(courseUrl)
               .subscribe(data => {
-                  this.course = <Course>{
-                    id: data.payload.key,
-                    ...data.payload.val()
-                  };
+                this.course = data;
 
-                  this.db.list('lessons', ref => ref.orderByChild('courseId').equalTo(data.payload.key))
-                    .snapshotChanges()
-                      .subscribe(lessons => {
-                        this.lessons = lessons.map(data => {
-                          return <Lesson>{
-                            id: data.payload.key,
-                            ...data.payload.val()
-                          }
-                        });
-                      });
+                console.log(`this.course: `, this.course);
+
+                this.coursesService.findLessonsByCourse(this.course.id)
+                  .subscribe(data => this.lessons = data);
+                  
               });
 
           });
