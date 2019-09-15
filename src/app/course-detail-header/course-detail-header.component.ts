@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, EventEmitter, Output, ChangeDetectionStrategy} from '@angular/core';
+import {Component, Input, ChangeDetectionStrategy} from '@angular/core';
 import {Course} from "../shared/model/course";
 import {Lesson} from "../shared/model/lesson";
 
@@ -16,15 +16,5 @@ export class CourseDetailHeaderComponent {
 
     @Input()
     lessons: Lesson[];
-
-    @Input()
-    firstName:string;
-
-    @Output()
-    subscribe = new EventEmitter();
-
-    onSubscribe(email:string) {
-        this.subscribe.emit(email);
-    }
 
 }

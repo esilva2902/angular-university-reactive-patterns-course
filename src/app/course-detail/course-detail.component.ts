@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {Course} from "../shared/model/course";
-import {Lesson} from "../shared/model/lesson";
+import { ActivatedRoute } from '@angular/router';
+import { Course } from "../shared/model/course";
+import { Lesson } from "../shared/model/lesson";
 import * as _ from 'lodash';
-import {CoursesService} from "../services/courses.service";
-import {NewsletterService} from "../services/newsletter.service";
-import {UserService} from "../services/user.service";
+import { Observable } from 'rxjs';
 
+import { CoursesService } from "../services/courses.service";
+import { UserService } from 'app/services/user.service';
 
 @Component({
   selector: 'course-detail',
@@ -15,41 +15,36 @@ import {UserService} from "../services/user.service";
 })
 export class CourseDetailComponent implements OnInit {
 
-  course: Course;
-  lessons: Lesson[];
+  course$: Observable<Course>;
+  lessons$: Observable<Lesson[]>;
 
-  constructor(private route: ActivatedRoute,
-              private coursesService: CoursesService,
-              private newsletterService: NewsletterService,
-              private userService:UserService) {
+  constructor(
+    private route: ActivatedRoute,
+    private userService: UserService,
+    private coursesService: CoursesService) {
 
-  }
-
-  onSubscribe(email:string) {
-      this.newsletterService.subscribeToNewsletter(email)
-          .subscribe(
-              () => {
-                  alert('Subscription successful ...');
-              },
-              console.error
-          );
   }
 
   ngOnInit() {
-      this.route.params
-          .subscribe( params => {
 
-              const courseUrl = params['id'];
+    /**
+     * We have added first() operator in order to wait for completion of the observable. Then added
+     * publishLast() operator in order to prevent calling the observable more than one time (if it is 
+     * consumed in more than one place).
+     */
 
-              this.coursesService.findCourseByUrl(courseUrl)
-                  .subscribe(data => {
-                      this.course = data;
+    this.course$ = this.route.params
+        .switchMap(params => this.coursesService.findCourseByUrl(params['id']))
+        .first()
+        .publishLast().refCount();
 
-                      this.coursesService.findLessonsForCourse(this.course.id)
-                          .subscribe(lessons => this.lessons = lessons);
-                  });
-
-          });
+    this.lessons$ = this.course$
+        .switchMap(course => this.coursesService.findLessonsForCourse(course.id))
+        .first()
+        .publishLast().refCount();
   }
 
+  loginAsJohn() {
+    this.userService.login('john@gmail.com', 'test123').subscribe();
+  }
 }
