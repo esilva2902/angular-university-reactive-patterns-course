@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { BrowserEventExperimentsComponent } from './browser-event-experiments/browser-event-experiments.component';
 import { EventBusExperimentsComponent } from './event-bus-experiments/event-bus-experiments.component';
@@ -22,11 +22,13 @@ import { TopMenuComponent } from './top-menu/top-menu.component';
 import { LoginComponent } from './login/login.component';
 import {AngularFireDatabaseModule} from "@angular/fire/database";
 import {AngularFireAuthModule} from "@angular/fire/auth";
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     BrowserEventExperimentsComponent,
+  
     EventBusExperimentsComponent,
     LessonsListComponent,
     LessonsCounterComponent,
@@ -41,7 +43,7 @@ import {AngularFireAuthModule} from "@angular/fire/auth";
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
+    HttpClientModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
@@ -49,7 +51,8 @@ import {AngularFireAuthModule} from "@angular/fire/auth";
   ],
   providers: [
       CoursesService,
-      NewsletterService
+      NewsletterService,
+      UserService
   ],
   bootstrap: [AppComponent]
 })

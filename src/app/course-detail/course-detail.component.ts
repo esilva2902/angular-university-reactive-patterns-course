@@ -5,6 +5,7 @@ import {Lesson} from "../shared/model/lesson";
 import * as _ from 'lodash';
 import {CoursesService} from "../services/courses.service";
 import {NewsletterService} from "../services/newsletter.service";
+import { UserService } from 'app/services/user.service';
 
 
 @Component({
@@ -19,22 +20,9 @@ export class CourseDetailComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private coursesService: CoursesService,
-              private newsletterService: NewsletterService) {
+              private newsletterService: NewsletterService,
+              private userService: UserService) {
 
-      route.params
-          .subscribe( params => {
-
-              const courseUrl = params['id'];
-
-              this.coursesService.findCourseByUrl(courseUrl)
-              .subscribe(data => {
-                  this.course = data;
-
-                  this.coursesService.findLessonsForCourse(this.course.id)
-                    .subscribe(lessons => this.lessons = lessons);
-              });
-
-          });
 
   }
 
@@ -49,7 +37,20 @@ export class CourseDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.route.params
+    .subscribe( params => {
 
+        const courseUrl = params['id'];
+
+        this.coursesService.findCourseByUrl(courseUrl)
+        .subscribe(data => {
+            this.course = data;
+
+            this.coursesService.findLessonsForCourse(this.course.id)
+              .subscribe(lessons => this.lessons = lessons);
+        });
+
+    });
   }
 
 }
