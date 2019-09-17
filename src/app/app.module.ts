@@ -29,8 +29,6 @@ import {SafeUrlPipe} from "./shared/pipes/safe-url.pipe";
 import {AngularFireDatabaseModule} from "@angular/fire/database";
 import {AngularFireAuthModule} from "@angular/fire/auth";
 
-import { LessonsPagerService } from './services/lessons-pager.service';
-
 @NgModule({
     declarations: [
         AppComponent,
@@ -63,8 +61,7 @@ import { LessonsPagerService } from './services/lessons-pager.service';
         CoursesService,
         NewsletterService,
         UserService,
-        CoursesHttpService,
-        LessonsPagerService
+        CoursesHttpService
     ],
     bootstrap: [AppComponent]
 })
