@@ -1,11 +1,11 @@
 {
   "name": "reactive-patterns-course",
-  "version": "0.0.0",
+  "version": "0.0.0-master-detail.1",
   "license": "MIT",
   "angular-cli": {},
   "scripts": {
     "ng": "ng",
-    "start": "./node_modules/.bin/ng serve  --proxy-config proxy.conf.json",
+    "start": "./node_modules/.bin/ng serve  --proxy-config proxy.conf.json --poll 3000",
     "rest-api": "./node_modules/.bin/ts-node ./src/server/server.ts",
     "test": "ng test",
     "lint": "ng lint",
